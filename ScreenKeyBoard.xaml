@@ -1,0 +1,127 @@
+﻿<Window x:Class="ScreenKeyBoard.ScreenKeyBoard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:ScreenKeyBoard"
+        Title="ScreenKeyBoard" Height="300" Width="1024"
+        AllowsTransparency="True" ShowInTaskbar="False" Topmost="True" WindowStyle="None" Background="Transparent">    
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static l:ScreenKeyBoard.KeyInCmd}" Executed="KeyIn_Executed"/>
+        <CommandBinding Command="{x:Static l:ScreenKeyBoard.CloseCmd}" Executed="Close_Executed"/>
+        <CommandBinding Command="{x:Static l:ScreenKeyBoard.OKCmd}" Executed="OK_Executed"/>
+        <CommandBinding Command="{x:Static l:ScreenKeyBoard.BackSpaceCmd}" Executed="BackSpace_Executed"/>
+        <CommandBinding Command="{x:Static l:ScreenKeyBoard.ClearCmd}" Executed="Clear_Executed"/>
+    </Window.CommandBindings>
+    <Grid TextBlock.FontSize="30">
+        <Grid.Resources>
+            <l:ButtonValueConverter x:Key="ButtonValue"/>
+            <Style x:Key="ButtonBase">
+                <Setter Property="Control.MinWidth" Value="65"/>
+                <Setter Property="Control.MinHeight" Value="65"/>
+                <Setter Property="Control.Background" Value="#FF1F3B53"/>
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ContentControl}">
+                            <Grid>
+                                <Border x:Name="Background" CornerRadius="3" Background="LightBlue" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                                    <Grid Background="{TemplateBinding Background}" Margin="1">
+                                        <Rectangle x:Name="BackgroundGradient" >
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush StartPoint=".7,0" EndPoint=".7,1">
+                                                    <GradientStop Color="#FFFFFFFF" Offset="0" />
+                                                    <GradientStop Color="#F9FFFFFF" Offset="0.375" />
+                                                    <GradientStop Color="#E5FFFFFF" Offset="0.625" />
+                                                    <GradientStop Color="#C6FFFFFF" Offset="1" />
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </Grid>
+                                </Border>
+                                <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}">
+                <Setter Property="Command" Value="{x:Static l:ScreenKeyBoard.KeyInCmd}"/>
+                <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}"/>
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource ButtonValue}">
+                            <MultiBinding.Bindings>
+                                <Binding ElementName="Caps" Path="IsChecked"/>
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="Yellow"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="CheckBox" BasedOn="{StaticResource ButtonBase}">
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Style.Triggers>
+                    <Trigger Property="IsChecked"  Value="True">
+                        <Setter Property="Background" Value="Red"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="☒" TextBlock.Foreground="Red" Command="{x:Static l:ScreenKeyBoard.CloseCmd}"/>
+                <Button Tag="Q"/>
+                <Button Tag="W"/>
+                <Button Tag="E"/>
+                <Button Tag="R"/>
+                <Button Tag="T"/>
+                <Button Tag="Y"/>
+                <Button Tag="U"/>
+                <Button Tag="I"/>
+                <Button Tag="O"/>
+                <Button Tag="P"/>
+                <Button Content="←BS" TextBlock.FontSize="20" TextBlock.Foreground="Blue" Command="{x:Static l:ScreenKeyBoard.BackSpaceCmd}" Width="85"/>
+                <Button Content="7"/>
+                <Button Content="8"/>
+                <Button Content="9"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Name="Caps" Content="Caps" TextBlock.FontSize="20" Width="90"/>
+                <Button Tag="A"/>
+                <Button Tag="S"/>
+                <Button Tag="D"/>
+                <Button Tag="F"/>
+                <Button Tag="G"/>
+                <Button Tag="H"/>
+                <Button Tag="J"/>
+                <Button Tag="K"/>
+                <Button Tag="L"/>
+                <Button Content="Clear" TextBlock.FontSize="20" TextBlock.Foreground="DarkGoldenrod" Command="{x:Static l:ScreenKeyBoard.ClearCmd}" Width="125"/>
+                <Button Content="4"/>
+                <Button Content="5"/>
+                <Button Content="6"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="OK" TextBlock.FontSize="20" TextBlock.Foreground="Green" Command="{x:Static l:ScreenKeyBoard.OKCmd}"  Width="125"/>
+                <Button Tag="Z"/>
+                <Button Tag="X"/>
+                <Button Tag="C"/>
+                <Button Tag="V"/>
+                <Button Tag="B"/>
+                <Button Tag="N"/>
+                <Button Tag="M"/>
+                <Button Content="_"/>
+                <Button Content="."/>
+                <Button Content="0" Width="90"/>
+                <Button Content="1"/>
+                <Button Content="2"/>
+                <Button Content="3"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
